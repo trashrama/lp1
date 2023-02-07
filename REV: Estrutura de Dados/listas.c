@@ -18,7 +18,33 @@ int contLista(Dados *aux)
         aux = aux->prox;
         i++;
     }
-    return i;
+    return i + 1;
+}
+
+void remover(int p)
+{
+    int i = 0;
+    Dados *aux = (Dados *)malloc(sizeof(Dados));
+    aux = ini;
+
+    if (p == 0)
+    {
+        ini = ini->prox;
+    }
+    else
+    {
+
+        while (i != p - 1)
+        {
+            aux = aux->prox;
+            i++;
+        }
+
+        if (aux->prox != NULL)
+        {
+            aux->prox = aux->prox->prox;
+        }
+    }
 }
 void addAnywhere(int n, int idade, char nome[30])
 {
@@ -26,7 +52,7 @@ void addAnywhere(int n, int idade, char nome[30])
     Dados *aux = (Dados *)malloc(sizeof(Dados));
     aux = ini;
 
-    if (ini == NULL)
+    if (aux == NULL)
     {
         Dados *aluno = (Dados *)malloc(sizeof(Dados));
         aluno->idade = idade;
@@ -35,33 +61,36 @@ void addAnywhere(int n, int idade, char nome[30])
 
         ini = aluno;
     }
-    if (n > contLista(aux))
-    {
-        printf("Saindo.. Só vai até %i chapa.\n", contLista(aux));
-        exit(0);
-    }
-
-    if (n != 0)
-    {
-        while (i != n - 1 || n <= contLista(aux))
-        {
-            aux = aux->prox;
-            i++;
-        }
-    }
-
-    Dados *aluno = (Dados *)malloc(sizeof(Dados));
-    aluno->idade = idade;
-    strcpy(aluno->nome, nome);
-    if (n == 0)
-    {
-        aluno->prox = ini;
-        ini = aluno;
-    }
     else
     {
-        aluno->prox = aux->prox->prox;
-        aux->prox = aluno;
+        if (n > contLista(aux))
+        {
+            printf("Saindo.. Só vai até %i chapa.\n", contLista(aux));
+            exit(0);
+        }
+
+        else if (n != 0)
+        {
+            while (i != n - 1)
+            {
+                aux = aux->prox;
+                i++;
+            }
+        }
+
+        Dados *aluno = (Dados *)malloc(sizeof(Dados));
+        aluno->idade = idade;
+        strcpy(aluno->nome, nome);
+        if (n == 0)
+        {
+            aluno->prox = ini;
+            ini = aluno;
+        }
+        else
+        {
+            aluno->prox = aux->prox;
+            aux->prox = aluno;
+        }
     }
 }
 
@@ -142,7 +171,9 @@ int main()
     addFinal(15, "thiaguim");
     // novoPrint(ini);
 
-    addAnywhere(4, 14, "teto");
+    addAnywhere(6, 14, "teto");
+
+    remover(7);
     novoPrint(ini);
 
     return 0;
